@@ -3,17 +3,19 @@ import threading
 import socket
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 12345    # Port to listen on (non-privileged port)
+PORT = 12352    # Port to listen on (non-privileged port)
 
 DISCONNECT_MESSAGE = '/exit'
 JOINED_MESSAGE = 'JOINED_MESSAGE'
 RECV_SIZE = 1024
 
+clients = {}    # Tracking all the clients in the chat
+
 # Broadcast messages received from connected clients
-def broadcast(message:str):
-    message = datetime.now() + ': ' + message # Padding the message
-    for client in clients.key():
-        client.send(message)
+def broadcast(message):
+    message = f'[{str(datetime.now())[:18]}] {message}' # Padding the message
+    for client in clients.keys():
+        client.send(message.encode('ascii'))
 
 
 # Allowing a user to exit the server
@@ -27,7 +29,7 @@ def server_exit(client):
 def handle(client):
     while True:
         try:
-            message = client.recv(RECV_SIZE)
+            message = client.recv(RECV_SIZE).decode('ascii')
             if message.lower() == DISCONNECT_MESSAGE:
                 server_exit(client)
                 break
@@ -35,7 +37,7 @@ def handle(client):
                 client.send('Invalid Message!'.encode('ascii'))
                 break
             else:
-                broadcast(message)
+                broadcast(f'{clients[client]}: {message}')
         except:
             client.send('Invalid Message! Too many characters'.encode('ascii'))
             break
@@ -59,7 +61,7 @@ def receive():
             print(f'Nickname of the client is {nickname}')
 
             # Broadcasting the nickname
-            broadcast(f'{nickname} has joined the chat!'.encode('ascii'))
+            broadcast(f'{nickname} has joined the chat!')
             client.send(f'Connected to the server as {nickname}'.encode('ascii'))
             
             # Creating a client specific process thread for the client
@@ -78,8 +80,6 @@ if __name__ == '__main__':
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
     server.listen()
-
-    clients = {}    # Tracking all the clients in the chat
 
     print(f'Server initialized at {datetime.now()}')
     print('The server is now listening...')

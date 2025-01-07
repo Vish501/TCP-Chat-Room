@@ -9,7 +9,7 @@ JOINED_MESSAGE = 'JOINED_MESSAGE'
 def receive():
     while True:
         try:
-            message = client.recv().decode('ascii')
+            message = client.recv(RECV_SIZE).decode('ascii')
             if message == JOINED_MESSAGE:
                 client.send(nickname.encode('ascii'))
             else:
@@ -23,14 +23,14 @@ def receive():
 # Writing a message to be broadcasted by the server
 def write_messsage():
     while True:
-        message = f'{nickname}: {input("")}'
+        message = f'{input("")}'
         client.send(message.encode('ascii'))
 
 
 
 if __name__ == '__main__':
-    host = input(f'Enter the host you want to connect to: ')
-    port = int(input(f'Enter the port you want to connect to: '))
+    host = '127.0.0.1' # input(f'Enter the host you want to connect to: ')
+    port = 12352 # int(input(f'Enter the port you want to connect to: '))
     nickname = input(f'Enter the nickname you want to use: ')
 
     print('Trying to initialize connection...')

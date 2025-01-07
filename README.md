@@ -21,27 +21,28 @@ This is a basic chatroom implementation using Python's `socket` and `threading` 
    python server.py
 
 2. **Run multiple client instances:**
+
+   You can open multiple terminal windows to run multiple clients.
+
     ```bash
     python client.py
-
-    You can open multiple terminal windows to run multiple clients.
-
+    
 **How it works:**
 
-    Server:
-        Creates a socket and binds it to a specific address and port.
-        Listens for incoming client connections.
-        Accepts connections and creates a new thread for each client.
-        Handles incoming messages from clients and broadcasts them to all connected clients.
-
-    Client:
-        Connects to the server.
-        Sends and receives messages from the server.
-        Displays received messages in the terminal.
+1. **Server:**
+     * Creates a socket and binds it to a specific address and port.
+     * Listens for incoming client connections.
+     * Accepts connections and creates a new thread for each client.
+     * Handles incoming messages from clients and broadcasts them to all connected clients.
+          
+2. **Client:**
+     * Connects to the server.
+     * Sends and receives messages from the server.
+     * Displays received messages in the terminal.
 
 **This is a basic implementation and can be further enhanced with features like:**
 
-    User authentication
-    Private messaging
-    File transfer
-    Improved error handling and exception handling
+    * User authentication
+    * Private messaging
+    * File transfer
+    * Improved error handling and exception handling

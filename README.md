@@ -1,6 +1,6 @@
 # Simple TCP Chatroom
 
-This is a basic chatroom implementation using Python's `socket` and `threading` libraries, as well as Datetime for logging.
+This is a basic chatroom implementation using Python's `socket` and `threading` standard libraries, as well as the `Datetime` library.
 
 **Features:**
 

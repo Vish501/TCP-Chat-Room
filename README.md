@@ -42,7 +42,7 @@ This is a basic chatroom implementation using Python's `socket` and `threading` 
 
 **This is a basic implementation and can be further enhanced with features like:**
 
-    * User authentication
-    * Private messaging
-    * File transfer
-    * Improved error handling and exception handling
+ * User authentication
+ * Private messaging
+ * File transfer
+ * Improved error handling and exception handling

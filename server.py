@@ -1,19 +1,16 @@
-from datetime import datetime # From standard library
-import threading # From standard library
-import socket # From standard library
+from datetime import datetime
+import threading
+import socket
 
-host = '127.0.0.1' # Localhost
-port = 12345
+HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+PORT = 12345    # Port to listen on (non-privileged port)
 
-# Initializing the server
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen()
-
-clients = {}
+DISCONNECT_MESSAGE = '/exit'
+RECV_SIZE = 1024
 
 # Broadcast messages received from connected clients
 def broadcast(message:str):
+    message = datetime.now() + ': ' + message # Padding the message
     for client in clients.key():
         client.send(message)
 
@@ -29,8 +26,8 @@ def server_exit(client):
 def handle(client):
     while True:
         try:
-            message = client.recv(1024)
-            if message.lower() == '--exit':
+            message = client.recv(RECV_SIZE)
+            if message.lower() == DISCONNECT_MESSAGE:
                 server_exit(client)
                 break
             else:
@@ -51,7 +48,7 @@ def receive():
         client.send('NICKNAME'.encode('ascii'))
 
         try:
-            nickname = client.recv(1024).decode('ascii')
+            nickname = client.recv(RECV_SIZE).decode('ascii')
             clients[client] = nickname
             
             # Logging nickname
@@ -72,6 +69,13 @@ def receive():
 
 
 if __name__ == '__main__':
+    # Initializing the server
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((HOST, PORT))
+    server.listen()
+
+    clients = {}    # Tracking all the clients in the chat
+
     print(f'Server initialized at {datetime.now()}')
     print('The server is now listening...')
     receive()

@@ -1,10 +1,6 @@
-import threading # From standard library
-import socket # From standard library
-
-host = input(f'Enter the host you want to connect to: ')
-port = int(input(f'Enter the port you want to connect to: '))
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+from datetime import datetime
+import threading
+import socket
 
 
 # Connecting to the client
@@ -19,5 +15,9 @@ def write_messsage():
 
 
 if __name__ == '__main__':
-    print('Initializing Connection...')
-    pass
+    host = input(f'Enter the host you want to connect to: ')
+    port = int(input(f'Enter the port you want to connect to: '))
+
+    print('Trying to initialize connection...')
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+    client.connect((host, port))
